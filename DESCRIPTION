@@ -1,0 +1,14 @@
+Package: rconsulExtra
+Type: Package
+Title: Datos para paquete rconsul
+Version: 0.1.0
+Author: person("David", "Martínez", , "david.tinez1@gmail.com", role = c("aut", "cre"),
+       comment = c(ORCID = "0009-0001-9811-799X"))
+Maintainer: The package maintainer <david.tinez1@gmail.com>
+Description: Paquete con datos espaciales y medioambientales pensados para el uso del paquete rconsul
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Depends: 
+    R (>= 2.10)
+RoxygenNote: 7.2.3
