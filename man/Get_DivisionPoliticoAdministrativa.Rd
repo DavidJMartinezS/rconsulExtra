@@ -14,7 +14,7 @@ Get_DivisionPoliticoAdministrativa(shp = NULL, var = NULL, val = NULL)
 \item{val}{Valores del campo seleccionado por los que se desea filtrar.}
 }
 \value{
-capa vectorial en formato sf
+Capa vectorial en formato sf. CRS: EPSG: 4326. Unit: degree
 }
 \description{
 Funciones para obtener información vectorial de las divisiones politico-administraticas subida por IDE Chile.

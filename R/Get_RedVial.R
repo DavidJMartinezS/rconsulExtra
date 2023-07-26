@@ -1,8 +1,4 @@
-#' Capas vectoriales division politico-administrativa
-#'
-#' @description
-#' Funciones para obtener información vectorial de las divisiones politico-administraticas subida por IDE Chile.
-#' La funcion permite descargar la capa completa, o bien filtrar por extension de un poligono o filtrar un campo.
+#' Capas vectoriales Red Vial
 #'
 #' @param shp Objeto sf.
 #' @param var Campo que desea filtrar. Los campos disponibles son "CUT_REG", "CUT_PROV", "CUT_COM", "REGION", "PROVINCIA" y "COMUNA".
@@ -13,34 +9,28 @@
 #'
 #' @importFrom sf st_read st_as_text st_geometry st_transform st_union st_zm
 #' @importFrom utils download.file unzip
-#' @importFrom installr install.7zip
 #' @importFrom stringr str_c
 #' @importFrom magrittr `%>%`
 #'
 #' @examples
-#' Get_DivisionPoliticoAdministrativa(var = "REGION", val = "Pica")
-#' Get_DivisionPoliticoAdministrativa(var = "CUT_REG", val = c("01","05"))
+#' Get_RedVial(var = "ROL", val = "IPA 15")
+#' Get_RedVial(var = "CARPETA", val = c("Pavimento Doble Calzada","Grava Tratada"))
 #'
-#'
-#'
-Get_DivisionPoliticoAdministrativa <- function(shp = NULL, var = NULL, val = NULL){
-  if (!("7-Zip" %in% list.files("C:/Program Files"))) {
-    installr::install.7zip(page_with_download_url = "C:/Program Files")
-  }
+Get_RedVial <- function(shp = NULL, var = NULL, val = NULL){
+  options(timeout = 2000)
   tf <- tempfile(fileext = ".zip")
   utils::download.file(
-    'http://www.ide.cl/descargas/capas/subdere/DivisionPoliticoAdministrativa2020.zip',
+    'http://www.mapas.mop.cl/red-vial/Red_Vial_Chile.zip',
     destfile = tf,
-    mode = "wb"
+    method = "libcurl",
+    timeout = 2000,
+    range = "bytes=0-500000000"
   )
   td <- tempdir()
-  contenido <- utils::unzip(tf, files = 'DivisionPoliticoAdministrativa2020/COMUNA.rar', exdir = td)
-  z7 <- shQuote("C:/Program Files/7-Zip/7z.exe")
-  cmd <- paste(z7, "x", contenido, "-aot", paste0("-o", td))
-  system(cmd)
+  contenido <- utils::unzip(tf, files = 'Red_Vial_Chile/Red_Vial_Chile_31_01_2023.gdb', exdir = td)
   if (is.null(shp)) {
     if (is.null(c(var, val))) {
-      data <- sf::st_read(paste0(td, "\\COMUNA\\COMUNAS_2020.shp"))
+      data <- sf::st_read(contenido)
     } else if (is.null(var) || is.null(val)) {
       stop(
         "Debe ingresar un archivo sf. \nDe lo contrario indicar en `var` la variable que desea filtrar, y en `val` el o los valores que desea obtener del campo seleccionado"
@@ -48,19 +38,19 @@ Get_DivisionPoliticoAdministrativa <- function(shp = NULL, var = NULL, val = NUL
     } else {
       val <- val %>% as.character() %>% stringr::str_c("'", ., "'", collapse = ', ')
       sql <-
-        paste0("SELECT * FROM \"COMUNAS_2020\" WHERE ",
+        paste0("SELECT * FROM \"Red_Vial_Chile\" WHERE ",
                var,
                " IN (",
                val,
-               ") ORDER BY CUT_COM ASC")
-      data <- sf::st_read(paste0(td, "\\COMUNA\\COMUNAS_2020.shp"),
+               ") ORDER BY ROL ASC")
+      data <- sf::st_read(contenido,
                           query = sql)
     }
   }
   if (!is.null(shp)) {
     if (is.null(c(var, val))) {
       data <- st_read(
-        paste0(td, "\\COMUNA\\COMUNAS_2020.shp"),
+        contenido,
         wkt_filter = sf::st_as_text(
           sf::st_geometry(shp %>% sf::st_transform(5360) %>% sf::st_union())
         )
@@ -73,6 +63,3 @@ Get_DivisionPoliticoAdministrativa <- function(shp = NULL, var = NULL, val = NUL
   data <- data %>% sf::st_transform(4326) %>% sf::st_zm()
   return(data)
 }
-
-
-
