@@ -2,6 +2,7 @@
 
 export(Get_DivisionPoliticoAdministrativa)
 importFrom(installr,install.7zip)
+importFrom(magrittr,`%>%`)
 importFrom(sf,st_as_text)
 importFrom(sf,st_geometry)
 importFrom(sf,st_read)

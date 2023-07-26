@@ -1,12 +1,12 @@
-#' Capas vectoriales IDE Chile
+#' Capas vectoriales division politico-administrativa
 #'
 #' @description
-#' Funciones para obtener información vectorial subida por IDE Chile.
+#' Funciones para obtener información vectorial de las divisiones politico-administraticas subida por IDE Chile.
 #' La funcion permite descargar la capa completa, o bien filtrar por extension de un poligono o filtrar un campo.
 #'
 #' @param shp Objeto sf.
-#' @param var Campo que desea filtrar.
-#' @param val Valores del campo seleccionado por los que se desea filtrar
+#' @param var Campo que desea filtrar. Los campos disponibles son "CUT_REG", "CUT_PROV", "CUT_COM", "REGION", "PROVINCIA" y "COMUNA".
+#' @param val Valores del campo seleccionado por los que se desea filtrar.
 #'
 #' @return capa vectorial en formato sf
 #' @export
@@ -15,9 +15,9 @@
 #' @importFrom utils download.file unzip
 #' @importFrom installr install.7zip
 #' @importFrom stringr str_c
+#' @importFrom magrittr `%>%`
 #'
 #' @examples
-#' Get_DivisionPoliticoAdministrativa(shp = lyP[41,])
 #' Get_DivisionPoliticoAdministrativa(var = "REGION", val = "Pica")
 #' Get_DivisionPoliticoAdministrativa(var = "CUT_REG", val = c("01","05"))
 #'
@@ -25,7 +25,6 @@
 #'
 Get_DivisionPoliticoAdministrativa <- function(shp = NULL, var = NULL, val = NULL){
   if (!("7-Zip" %in% list.files("C:/Program Files (x86)"))) {
-    require(installr)
     installr::install.7zip(page_with_download_url = "C:/Program Files (x86)")
   }
   tf <- tempfile(fileext = ".zip")
@@ -74,4 +73,6 @@ Get_DivisionPoliticoAdministrativa <- function(shp = NULL, var = NULL, val = NUL
   unlink(td, recursive = TRUE)
   return(data)
 }
+
+
 

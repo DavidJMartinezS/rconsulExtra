@@ -2,26 +2,25 @@
 % Please edit documentation in R/Get_DivisionPoliticoAdministrativa.R
 \name{Get_DivisionPoliticoAdministrativa}
 \alias{Get_DivisionPoliticoAdministrativa}
-\title{Capas vectoriales IDE Chile}
+\title{Capas vectoriales division politico-administrativa}
 \usage{
 Get_DivisionPoliticoAdministrativa(shp = NULL, var = NULL, val = NULL)
 }
 \arguments{
 \item{shp}{Objeto sf.}
 
-\item{var}{Campo que desea filtrar.}
+\item{var}{Campo que desea filtrar. Los campos disponibles son "CUT_REG", "CUT_PROV", "CUT_COM", "REGION", "PROVINCIA" y "COMUNA".}
 
-\item{val}{Valores del campo seleccionado por los que se desea filtrar}
+\item{val}{Valores del campo seleccionado por los que se desea filtrar.}
 }
 \value{
 capa vectorial en formato sf
 }
 \description{
-Funciones para obtener información vectorial subida por IDE Chile.
+Funciones para obtener información vectorial de las divisiones politico-administraticas subida por IDE Chile.
 La funcion permite descargar la capa completa, o bien filtrar por extension de un poligono o filtrar un campo.
 }
 \examples{
-Get_DivisionPoliticoAdministrativa(shp = lyP[41,])
 Get_DivisionPoliticoAdministrativa(var = "REGION", val = "Pica")
 Get_DivisionPoliticoAdministrativa(var = "CUT_REG", val = c("01","05"))
 

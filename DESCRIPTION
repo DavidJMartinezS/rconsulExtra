@@ -14,3 +14,9 @@ Depends:
 RoxygenNote: 7.2.3
 URL: https://github.com/DavidJMartinezS/rconsulExtra
 BugReports: https://github.com/DavidJMartinezS/rconsulExtra/issues
+Imports: 
+    installr,
+    magrittr,
+    sf,
+    stringr,
+    utils
